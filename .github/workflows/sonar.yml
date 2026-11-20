@@ -1,0 +1,24 @@
+
+name: SAST SonarQube
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sonarqube-analysis:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Run SonarQube Scan
+        shell: powershell
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          & "C:\sonar-scanner\bin\sonar-scanner.bat" `
+            "-Dsonar.host.url=http://localhost:9000" `
+            "-Dsonar.token=$env:SONAR_TOKEN"
